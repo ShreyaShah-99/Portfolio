@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 const Terminal = () => {
   const [lines, setLines] = useState(['$ shreya@portfolio:~$ ']);
   const [input, setInput] = useState('');
+  const [position, setPosition] = useState({ x: window.innerWidth - 320, y: window.innerHeight - 220 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const terminalRef = useRef(null);
 
   const commands = {
     help: 'Available commands: about, skills, projects, contact, clear',
@@ -32,9 +36,53 @@ const Terminal = () => {
     }
   };
 
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setDragStart({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  React.useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragStart]);
+
   return (
-    <div className="floating-terminal">
-      <div className="terminal-header">
+    <div 
+      ref={terminalRef}
+      className="floating-terminal"
+      style={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        cursor: isDragging ? 'grabbing' : 'default'
+      }}
+    >
+      <div 
+        className="terminal-header"
+        onMouseDown={handleMouseDown}
+        style={{ cursor: 'grab' }}
+      >
         <div className="terminal-dots">
           {[1,2,3].map(i => <div key={i} className="terminal-dot"></div>)}
         </div>
