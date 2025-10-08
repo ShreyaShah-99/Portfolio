@@ -2,8 +2,8 @@ import React from 'react';
 
 const Projects = () => {
   const projects = [
-    { title: 'Netflix Clone', description: 'Full-featured Netflix clone with movie streaming interface and user authentication', technologies: ['React', 'TailwindCSS'], image: 'fas fa-play', github: '#', demo: 'https://netflix-app-sigma-five.vercel.app/' },
-    { title: 'ConnectU', description: 'Social networking platform connecting people with shared interests and goals', technologies: ['React', 'Node.js', 'SQLite', 'Socket.io'], image: 'fas fa-users', github: '#', demo: 'https://connect-u-ui.vercel.app/' }
+    { title: 'Netflix Clone', description: 'Full-featured Netflix clone with movie streaming interface and user authentication', technologies: ['React', 'TailwindCSS'], image: 'fas fa-play', github: 'https://github.com/ShreyaShah-99/NetflixApp', demo: 'https://netflix-app-sigma-five.vercel.app/' },
+    { title: 'ConnectU', description: 'Social networking platform connecting people with shared interests and goals', technologies: ['React', 'Node.js', 'SQLite', 'Socket.io'], image: 'fas fa-users', github: 'https://github.com/ShreyaShah-99/ConnectU-UI', demo: 'https://connect-u-ui.vercel.app/' }
   ];
 
   return (
