@@ -3,7 +3,10 @@ import React, { useState, useRef } from 'react';
 const Terminal = () => {
   const [lines, setLines] = useState(['$ shreya@portfolio:~$ ']);
   const [input, setInput] = useState('');
-  const [position, setPosition] = useState({ x: window.innerWidth - 320, y: window.innerHeight - 220 });
+  const [position, setPosition] = useState({ 
+    x: window.innerWidth > 768 ? window.innerWidth - 320 : 10, 
+    y: window.innerHeight > 600 ? window.innerHeight - 220 : window.innerHeight - 180 
+  });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const terminalRef = useRef(null);
@@ -36,35 +39,46 @@ const Terminal = () => {
     }
   };
 
-  const handleMouseDown = (e) => {
+  const handleStart = (e) => {
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    
     setIsDragging(true);
     setDragStart({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y
+      x: clientX - position.x,
+      y: clientY - position.y
     });
   };
 
-  const handleMouseMove = (e) => {
+  const handleMove = (e) => {
     if (isDragging) {
-      setPosition({
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y
-      });
+      e.preventDefault();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      
+      const newX = Math.max(0, Math.min(window.innerWidth - 200, clientX - dragStart.x));
+      const newY = Math.max(0, Math.min(window.innerHeight - 150, clientY - dragStart.y));
+      
+      setPosition({ x: newX, y: newY });
     }
   };
 
-  const handleMouseUp = () => {
+  const handleEnd = () => {
     setIsDragging(false);
   };
 
   React.useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handleMove, { passive: false });
+      document.addEventListener('mouseup', handleEnd);
+      document.addEventListener('touchmove', handleMove, { passive: false });
+      document.addEventListener('touchend', handleEnd);
     }
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchmove', handleMove);
+      document.removeEventListener('touchend', handleEnd);
     };
   }, [isDragging, dragStart]);
 
@@ -80,8 +94,9 @@ const Terminal = () => {
     >
       <div 
         className="terminal-header"
-        onMouseDown={handleMouseDown}
-        style={{ cursor: 'grab' }}
+        onMouseDown={handleStart}
+        onTouchStart={handleStart}
+        style={{ cursor: 'grab', touchAction: 'none' }}
       >
         <div className="terminal-dots">
           {[1,2,3].map(i => <div key={i} className="terminal-dot"></div>)}

@@ -3,7 +3,7 @@ import profileImage from '../assets/—Pngtree—a 3d cartoon illustration of_22
 
 const Hero = () => {
   return (
-    <section id="home" className="hero min-h-screen flex items-center overflow-hidden pt-32 md:pt-24 bg-white dark:bg-gray-900 relative" style={{perspective: '1000px'}}>
+    <section id="home" className="hero min-h-screen flex items-center overflow-hidden pt-20 sm:pt-28 md:pt-32 lg:pt-16 bg-white dark:bg-gray-900 relative" style={{perspective: '1000px'}}>
       {/* Floating Code Elements */}
       {[
         { code: 'const dev = new Frontend();', x: 10, y: 20, delay: 0 },
@@ -42,7 +42,7 @@ const Hero = () => {
         </div>
       ))}
       
-      <div className="max-w-6xl mx-auto px-4 md:px-5 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[80vh] relative z-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-5 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-center min-h-[75vh] sm:min-h-[70vh] md:min-h-[75vh] lg:min-h-[80vh] relative z-10">
         <div className="fade-in">
           <div className="mb-8">
             <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-5 text-gray-900 dark:text-white leading-tight relative z-10 glitch" data-text="Hello, I am Shreya">
